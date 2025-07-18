@@ -1,6 +1,6 @@
 // client/src/components/ProductDetail.js
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { addToCart } from '../store/actions';
 
@@ -24,6 +24,9 @@ function ProductDetail() {
       <p>${product.price}</p>
       <p>{product.description}</p>
       <button onClick={handleAddToCart}>Add to Cart</button>
+      <div style={{ marginTop: '20px' }}>
+        <Link to={`/review/${product.id}`}>Write a Review</Link>
+      </div>
     </div>
   );
 }

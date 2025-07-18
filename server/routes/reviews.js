@@ -3,12 +3,12 @@ const express = require('express');
 const router = express.Router();
 const reviews = require('../models/Review');
 
-// Get all reviews (simulated)
+// Get all reviews 
 router.get('/', (req, res) => {
   res.json(reviews);
 });
 
-// Create a new review (simulated)
+// Create a new review 
 router.post('/', (req, res) => {
   const newReview = {
     id: reviews.length + 1,

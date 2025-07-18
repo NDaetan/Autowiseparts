@@ -3,12 +3,12 @@ const express = require('express');
 const router = express.Router();
 const users = require('../models/User');
 
-// Get all users (simulated)
+// Get all users 
 router.get('/', (req, res) => {
   res.json(users);
 });
 
-// Create a new user (simulated)
+// Create a new user
 router.post('/', (req, res) => {
   const newUser = {
     id: users.length + 1,

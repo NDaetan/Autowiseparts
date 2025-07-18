@@ -1,14 +1,11 @@
 // client/src/store/reducers.js
-import { ADD_TO_CART, REMOVE_FROM_CART, CLEAR_CART } from './actions';
+import { ADD_TO_CART, REMOVE_FROM_CART, CLEAR_CART, SET_PRODUCTS, SET_LOADING, SET_ERROR } from './actions';
 
 const initialState = {
-  products: [
-    { id: 1, name: 'Spark Plug', price: 10, description: 'High-performance spark plug.' },
-    { id: 2, name: 'Oil Filter', price: 15, description: 'Premium oil filter.' },
-    { id: 3, name: 'Brake Pads', price: 30, description: 'Durable brake pads.' },
-    // Add more products
-  ],
+  products: [],
   cart: [],
+  loading: false,
+  error: null,
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -19,6 +16,12 @@ const rootReducer = (state = initialState, action) => {
       return { ...state, cart: state.cart.filter((item) => item.id !== action.payload) };
     case CLEAR_CART:
       return { ...state, cart: [] };
+    case SET_PRODUCTS:
+      return { ...state, products: action.payload };
+    case SET_LOADING:
+      return { ...state, loading: action.payload };
+    case SET_ERROR:
+      return { ...state, error: action.payload };
     default:
       return state;
   }
