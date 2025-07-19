@@ -6,7 +6,7 @@ const User = require('../models/User');
 
 // Register a new user
 router.post('/register', async (req, res) => {
-  const { username, password } = req.body;
+  const { username, password, email, address, phone } = req.body;
 
   // Server-side validation
   if (!/^[a-zA-Z0-9_]{6,20}$/.test(username)) {
@@ -25,6 +25,9 @@ router.post('/register', async (req, res) => {
       id: User.length + 1,
       username,
       password,
+      email,
+      address,
+      phone,
     };
     User.push(newUser);
     const payload = {
@@ -77,6 +80,59 @@ router.post('/login', (req, res) => {
     console.error(err.message);
     res.status(500).send('Server error');
   }
+});
+
+// Get user profile
+router.get('/profile', (req, res) => {
+  const userId = req.user.id;
+  const user = User.find(u => u.id === userId);
+  if (user) {
+    // Exclude password for security
+    const { password, ...userProfile } = user;
+    res.json(userProfile);
+  } else {
+    res.status(404).json({ msg: 'User not found' });
+  }
+});
+
+// Update user profile
+router.put('/profile', (req, res) => {
+  const { email, address, phone } = req.body;
+  const userId = req.user.id;
+
+  let userIndex = User.findIndex(u => u.id === userId);
+
+  if (userIndex !== -1) {
+    User[userIndex] = { ...User[userIndex], email, address, phone };
+    res.json({ msg: 'Profile updated successfully' });
+  } else {
+    res.status(404).json({ msg: 'User not found' });
+  }
+});
+
+// Change user password
+router.put('/change-password', (req, res) => {
+  const { oldPassword, newPassword } = req.body;
+  const userId = req.user.id; // From auth middleware
+
+  let user = User.find(u => u.id === userId);
+
+  if (!user) {
+    return res.status(404).json({ msg: 'User not found' });
+  }
+
+  // In a real application, you would hash and compare passwords securely
+  if (user.password !== oldPassword) {
+    return res.status(400).json({ msg: 'Old password is incorrect' });
+  }
+
+  // Server-side validation for new password
+  if (!/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}/.test(newPassword)) {
+    return res.status(400).json({ msg: 'New password must be at least 8 characters, include uppercase, lowercase, number, and special character.' });
+  }
+
+  user.password = newPassword; // In a real app, hash and save new password
+  res.json({ msg: 'Password updated successfully' });
 });
 
 module.exports = router;

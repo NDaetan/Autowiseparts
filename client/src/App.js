@@ -12,6 +12,10 @@ import Register from './components/Register';
 import OrderTracking from './components/OrderTracking';
 import Review from './components/Review';
 import SearchBar from './components/SearchBar';
+import OrderHistory from './components/OrderHistory';
+import Profile from './components/Profile';
+import SubmitTicket from './components/SubmitTicket';
+import TicketList from './components/TicketList';
 import './styles.css';
 
 function App() {
@@ -36,23 +40,28 @@ function AppContent() {
   return (
     <div className="App">
       <nav style={{
-        padding: '10px',
+        padding: '10px 20px',
         backgroundColor: '#f0f0f0',
         borderBottom: '1px solid #ccc',
         display: 'flex',
         justifyContent: 'space-between',
-        alignItems: 'center'
+        alignItems: 'center',
+        width: '100%',
+        boxSizing: 'border-box'
       }}>
         <div>
           <Link to="/" style={{ marginRight: '15px' }}>Home</Link>
           <Link to="/products" style={{ marginRight: '15px' }}>Products</Link>
           <Link to="/cart" style={{ marginRight: '15px' }}>Cart</Link>
+          <Link to="/orders" style={{ marginRight: '15px' }}>Orders</Link>
+          <Link to="/tickets" style={{ marginRight: '15px' }}>Tickets</Link>
         </div>
         <SearchBar />
         <div>
           {isAuthenticated ? (
             <>
               <span style={{ marginRight: '15px' }}>Welcome, {getCurrentUsername()}</span>
+              <Link to="/profile" style={{ marginRight: '15px' }}>Profile</Link>
               <Link to="/" onClick={handleLogout}>Logout</Link>
             </>
           ) : (
@@ -65,6 +74,7 @@ function AppContent() {
       </nav>
       <Switch>
         <PrivateRoute path="/" exact component={Home} />
+        <PrivateRoute path="/profile" component={Profile} />
         <PrivateRoute path="/products" component={ProductList} />
         <PrivateRoute path="/product/:id" component={ProductDetail} />
         <PrivateRoute path="/cart" component={Cart} />
@@ -72,7 +82,10 @@ function AppContent() {
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
         <PrivateRoute path="/order/:id" component={OrderTracking} />
+        <PrivateRoute path="/orders" component={OrderHistory} />
         <PrivateRoute path="/review/:productId" component={Review} />
+        <PrivateRoute path="/tickets" component={TicketList} />
+        <PrivateRoute path="/submit-ticket" component={SubmitTicket} />
       </Switch>
     </div>
   );

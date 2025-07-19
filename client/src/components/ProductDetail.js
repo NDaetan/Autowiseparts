@@ -3,6 +3,7 @@ import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { addToCart } from '../store/actions';
+import ReviewList from './ReviewList'; // Import ReviewList
 
 function ProductDetail() {
   const { id } = useParams();
@@ -23,10 +24,14 @@ function ProductDetail() {
       <h2>{product.name}</h2>
       <p>${product.price}</p>
       <p>{product.description}</p>
-      <button onClick={handleAddToCart}>Add to Cart</button>
+      <p><strong>Availability:</strong> {product.stock > 0 ? `${product.stock} in stock` : 'Out of stock'}</p>
+      <button onClick={handleAddToCart} disabled={product.stock === 0}>
+        {product.stock === 0 ? 'Out of Stock' : 'Add to Cart'}
+      </button>
       <div style={{ marginTop: '20px' }}>
         <Link to={`/review/${product.id}`}>Write a Review</Link>
       </div>
+      <ReviewList productId={product.id} /> {/* Add ReviewList component */}
     </div>
   );
 }

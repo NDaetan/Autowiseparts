@@ -1,3 +1,4 @@
+// client/src/components/Register.js
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { register } from '../services/auth';
@@ -5,6 +6,9 @@ import { useAuth } from '../context/AuthContext';
 
 function Register() {
   const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [address, setAddress] = useState('');
+  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
@@ -54,7 +58,7 @@ function Register() {
     }
 
     try {
-      await register(username, password);
+      await register(username, password, email, address, phone);
       const loginSuccess = await login(username, password);
       if (loginSuccess) {
         history.push('/');
@@ -71,7 +75,7 @@ function Register() {
       <h2>Register</h2>
       {error && <p style={{ color: 'red' }}>{error}</p>}
       <form onSubmit={handleRegister}>
-        <div>
+        <div style={{ marginBottom: '15px' }}>
           <label style={{ display: 'block', marginBottom: '5px' }}>Username:</label>
           <input 
             type="text" 
@@ -81,6 +85,33 @@ function Register() {
             style={{ width: '100%', padding: '8px', boxSizing: 'border-box' }}
           />
           {usernameError && <p style={{ color: 'red', fontSize: '0.8em' }}>{usernameError}</p>}
+        </div>
+        <div style={{ marginBottom: '15px' }}>
+          <label style={{ display: 'block', marginBottom: '5px' }}>Email:</label>
+          <input 
+            type="email" 
+            value={email} 
+            onChange={(e) => setEmail(e.target.value)}
+            style={{ width: '100%', padding: '8px', boxSizing: 'border-box' }}
+          />
+        </div>
+        <div style={{ marginBottom: '15px' }}>
+          <label style={{ display: 'block', marginBottom: '5px' }}>Address:</label>
+          <input 
+            type="text" 
+            value={address} 
+            onChange={(e) => setAddress(e.target.value)}
+            style={{ width: '100%', padding: '8px', boxSizing: 'border-box' }}
+          />
+        </div>
+        <div style={{ marginBottom: '15px' }}>
+          <label style={{ display: 'block', marginBottom: '5px' }}>Phone:</label>
+          <input 
+            type="text" 
+            value={phone} 
+            onChange={(e) => setPhone(e.target.value)}
+            style={{ width: '100%', padding: '8px', boxSizing: 'border-box' }}
+          />
         </div>
         <div style={{ marginBottom: '15px' }}>
           <label style={{ display: 'block', marginBottom: '5px' }}>Password:</label>

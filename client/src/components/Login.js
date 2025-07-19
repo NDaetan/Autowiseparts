@@ -1,7 +1,6 @@
 // client/src/components/Login.js
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-// import { auth } from '../services/auth';
 import { useAuth } from '../context/AuthContext';
 
 function Login() {
@@ -31,7 +30,6 @@ function Login() {
     } catch (err) {
       setError(err.message || 'Login failed. Please check your credentials.');
     }
-
   };
 
   return (

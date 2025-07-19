@@ -7,6 +7,7 @@ const usersRoutes = require('./routes/users');
 const ordersRoutes = require('./routes/orders');
 const reviewsRoutes = require('./routes/reviews');
 const paymentsRoutes = require('./routes/payments');
+const ticketsRoutes = require('./routes/tickets');
 
 const app = express();
 const PORT = 5000;
@@ -35,16 +36,16 @@ const auth = (req, res, next) => {
 };
 
 // Public routes (no authentication required)
-app.use('/api/users', usersRoutes);
-
 // Apply authentication middleware to all other routes
 app.use(auth);
 
 // Protected routes
-app.use('/api/products', productsRoutes);
-app.use('/api/orders', ordersRoutes);
-app.use('/api/reviews', reviewsRoutes);
-app.use('/api/payments', paymentsRoutes);
+app.use('/api/users', auth, usersRoutes);
+app.use('/api/products', auth, productsRoutes);
+app.use('/api/orders', auth, ordersRoutes);
+app.use('/api/reviews', auth, reviewsRoutes);
+app.use('/api/payments', auth, paymentsRoutes);
+app.use('/api/tickets', auth, ticketsRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

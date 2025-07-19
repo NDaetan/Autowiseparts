@@ -51,7 +51,7 @@ function Checkout() {
   };
 
   const calculateTotal = () => {
-    return cartItems.reduce((total, item) => total + item.price, 0);
+    return cartItems.reduce((total, item) => total + item.price, 0).toFixed(2);
   };
 
   if (cartItems.length === 0) {

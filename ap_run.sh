@@ -24,4 +24,3 @@ start_service client
 echo "Services are starting up. Press Ctrl+C to stop all services."
 
 wait
-
