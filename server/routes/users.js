@@ -1,6 +1,7 @@
 // server/routes/users.js
 const express = require('express');
 const router = express.Router();
+const auth = require('../middleware/auth');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
@@ -83,7 +84,7 @@ router.post('/login', (req, res) => {
 });
 
 // Get user profile
-router.get('/profile', (req, res) => {
+router.get('/profile', auth, (req, res) => {
   const userId = req.user.id;
   const user = User.find(u => u.id === userId);
   if (user) {
