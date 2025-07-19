@@ -1,7 +1,7 @@
-// server/app.js
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const jwt = require('jsonwebtoken')
 const productsRoutes = require('./routes/products');
 const usersRoutes = require('./routes/users');
 const ordersRoutes = require('./routes/orders');
@@ -14,8 +14,34 @@ const PORT = 5000;
 app.use(cors());
 app.use(bodyParser.json());
 
-app.use('/api/products', productsRoutes);
+// Define auth middleware globally
+const auth = (req, res, next) => {
+  // Allow login and register routes to pass without token
+  if (req.path === '/api/users/login' || req.path === '/api/users/register') {
+    return next();
+  }
+
+  const token = req.header('x-auth-token');
+  if (!token) {
+    return res.status(401).json({ msg: 'No token, authorization denied' });
+  }
+  try {
+    const decoded = jwt.verify(token, 'software testing is prefect');
+    req.user = decoded.user;
+    next();
+  } catch (err) {
+    res.status(401).json({ msg: 'Token is not valid' });
+  }
+};
+
+// Public routes (no authentication required)
 app.use('/api/users', usersRoutes);
+
+// Apply authentication middleware to all other routes
+app.use(auth);
+
+// Protected routes
+app.use('/api/products', productsRoutes);
 app.use('/api/orders', ordersRoutes);
 app.use('/api/reviews', reviewsRoutes);
 app.use('/api/payments', paymentsRoutes);

@@ -1,15 +1,17 @@
 // client/src/components/Login.js
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import auth from '../services/auth';
+// import { auth } from '../services/auth';
+import { useAuth } from '../context/AuthContext';
 
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const history = useHistory();
+  const { login } = useAuth();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
 
@@ -19,10 +21,17 @@ function Login() {
       return;
     }
 
-    // Simulate login with auth service
-    auth.authenticate(() => {
-      history.push('/');
-    });
+    try {
+      const success = await login(username, password);
+      if (success) {
+        history.push('/');
+      } else {
+        setError('Login failed. Please check your credentials.');
+      }
+    } catch (err) {
+      setError(err.message || 'Login failed. Please check your credentials.');
+    }
+
   };
 
   return (
@@ -48,7 +57,16 @@ function Login() {
             style={{ width: '100%', padding: '8px', boxSizing: 'border-box' }}
           />
         </div>
-        <button type="submit" style={{ padding: '10px 20px', backgroundColor: '#007bff', color: 'white', border: 'none', borderRadius: '5px' }}>
+        <button 
+          type="submit" 
+          style={{
+            padding: '10px 20px',
+            backgroundColor: '#007bff',
+            color: 'white',
+            border: 'none',
+            borderRadius: '5px'
+          }}
+        >
           Login
         </button>
       </form>
