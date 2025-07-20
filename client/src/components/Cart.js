@@ -1,19 +1,24 @@
 // client/src/components/Cart.js
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { removeFromCart } from '../store/actions';
+import { removeFromCart, updateCartQuantity } from '../store/actions';
 import { Link } from 'react-router-dom';
 
 function Cart() {
   const cartItems = useSelector((state) => state.cart);
+  const products = useSelector((state) => state.products);
   const dispatch = useDispatch();
 
   const handleRemoveFromCart = (productId) => {
     dispatch(removeFromCart(productId));
   };
 
+  const handleQuantityChange = (productId, newQuantity) => {
+    dispatch(updateCartQuantity(productId, newQuantity));
+  };
+
   const calculateTotal = () => {
-    return cartItems.reduce((total, item) => total + item.price, 0);
+    return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
   };
 
   if (cartItems.length === 0) {
@@ -41,9 +46,56 @@ function Cart() {
             }}
           >
             <div>
-              <strong>{item.name}</strong> - ${item.price}
+              <strong>{item.name}</strong> - ${item.price} each
+              <br />
+              <span style={{ fontSize: '14px', color: '#666' }}>
+                Subtotal: ${(item.price * item.quantity).toFixed(2)}
+              </span>
             </div>
-            <button onClick={() => handleRemoveFromCart(item.id)}>Remove</button>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                <button 
+                  onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
+                  style={{ 
+                    padding: '5px 10px', 
+                    backgroundColor: '#f8f9fa', 
+                    border: '1px solid #ddd',
+                    borderRadius: '3px',
+                    cursor: 'pointer'
+                  }}
+                >
+                  -
+                </button>
+                <span style={{ padding: '0 10px', fontSize: '16px', fontWeight: 'bold' }}>
+                  {item.quantity}
+                </span>
+                <button 
+                  onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
+                  style={{ 
+                    padding: '5px 10px', 
+                    backgroundColor: '#f8f9fa', 
+                    border: '1px solid #ddd',
+                    borderRadius: '3px',
+                    cursor: 'pointer'
+                  }}
+                >
+                  +
+                </button>
+              </div>
+              <button 
+                onClick={() => handleRemoveFromCart(item.id)}
+                style={{
+                  padding: '5px 10px',
+                  backgroundColor: '#dc3545',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '3px',
+                  cursor: 'pointer'
+                }}
+              >
+                Remove
+              </button>
+            </div>
           </li>
         ))}
       </ul>

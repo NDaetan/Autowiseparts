@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import { getCurrentUser, login as authLogin, logout as authLogout, getCurrentUsername } from '../services/auth';
+import { getCurrentUser, login as authLogin, logout as authLogout, getCurrentUsername, getUserId } from '../services/auth';
 
 const AuthContext = createContext(null);
 
@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout, getCurrentUsername }}>
+    <AuthContext.Provider value={{ isAuthenticated, login, logout, getCurrentUsername, getCurrentUser, getUserId }}>
       {children}
     </AuthContext.Provider>
   );

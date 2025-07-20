@@ -1,13 +1,10 @@
 // client/src/components/Review.js
 import React, { useState } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { submitReview } from '../store/actions';
 
-function Review() {
-  const { productId } = useParams();
-  const products = useSelector((state) => state.products);
-  const product = products.find((p) => p.id === parseInt(productId));
+function Review({ productId, productName, onReviewSubmitted }) {
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState('');
   const [loading, setLoading] = useState(false);
@@ -23,10 +20,12 @@ function Review() {
         productId: parseInt(productId),
         rating: parseInt(rating),
         comment,
-        productName: product.name
+        productName: productName
       }));
       alert('Review submitted successfully!');
-      history.push(`/product/${productId}`);
+      if (onReviewSubmitted) {
+        onReviewSubmitted();
+      }
     } catch (error) {
       alert('Failed to submit review: ' + error.message);
     } finally {
@@ -34,13 +33,11 @@ function Review() {
     }
   };
 
-  if (!product) {
-    return <div style={{ padding: '20px' }}>Product not found.</div>;
-  }
+  
 
   return (
     <div style={{ padding: '20px', maxWidth: '600px', margin: '0 auto' }}>
-      <h2>Leave a Review for {product.name}</h2>
+      <h2>Leave a Review for {productName}</h2>
       <form onSubmit={handleSubmit}>
         <div style={{ marginBottom: '15px' }}>
           <label style={{ display: 'block', marginBottom: '5px' }}>Rating:</label>

@@ -45,6 +45,7 @@ function TicketList() {
             <li key={ticket.id} style={{ border: '1px solid #eee', marginBottom: '10px', padding: '15px', borderRadius: '5px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
                 <strong>Subject: {ticket.subject}</strong>
+                <span>Ticket ID: {ticket.id}</span>
                 <span>Status: {ticket.status}</span>
               </div>
               <p>{ticket.description}</p>

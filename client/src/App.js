@@ -9,13 +9,15 @@ import Cart from './components/Cart';
 import Checkout from './components/Checkout';
 import Login from './components/Login';
 import Register from './components/Register';
-import OrderTracking from './components/OrderTracking';
+import OrderDetail from './components/OrderDetail';
 import Review from './components/Review';
 import SearchBar from './components/SearchBar';
 import OrderHistory from './components/OrderHistory';
 import Profile from './components/Profile';
 import SubmitTicket from './components/SubmitTicket';
 import TicketList from './components/TicketList';
+import Admin from './components/Admin';
+import NotificationBox from './components/NotificationBox';
 import './styles.css';
 
 function App() {
@@ -55,13 +57,16 @@ function AppContent() {
           <Link to="/cart" style={{ marginRight: '15px' }}>Cart</Link>
           <Link to="/orders" style={{ marginRight: '15px' }}>Orders</Link>
           <Link to="/tickets" style={{ marginRight: '15px' }}>Tickets</Link>
+          {getCurrentUsername() === 'admin' && (
+            <Link to="/admin" style={{ marginRight: '15px' }}>Admin</Link>
+          )}
         </div>
         <SearchBar />
-        <div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
           {isAuthenticated ? (
             <>
-              <span style={{ marginRight: '15px' }}>Welcome, {getCurrentUsername()}</span>
-              <Link to="/profile" style={{ marginRight: '15px' }}>Profile</Link>
+              <span>Welcome, {getCurrentUsername()}</span>
+              <Link to="/profile">Profile</Link>
               <Link to="/" onClick={handleLogout}>Logout</Link>
             </>
           ) : (
@@ -72,6 +77,7 @@ function AppContent() {
           )}
         </div>
       </nav>
+      {isAuthenticated && <NotificationBox />}
       <Switch>
         <PrivateRoute path="/" exact component={Home} />
         <PrivateRoute path="/profile" component={Profile} />
@@ -81,11 +87,12 @@ function AppContent() {
         <PrivateRoute path="/checkout" component={Checkout} />
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
-        <PrivateRoute path="/order/:id" component={OrderTracking} />
+        <PrivateRoute path="/order/:id" component={OrderDetail} />
         <PrivateRoute path="/orders" component={OrderHistory} />
         <PrivateRoute path="/review/:productId" component={Review} />
         <PrivateRoute path="/tickets" component={TicketList} />
         <PrivateRoute path="/submit-ticket" component={SubmitTicket} />
+        <PrivateRoute path="/admin" component={Admin} />
       </Switch>
     </div>
   );

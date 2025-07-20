@@ -14,6 +14,7 @@ export const login = async (username, password) => {
     if (res.data.token) {
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('username', res.data.username);
+      localStorage.setItem('userId', res.data.userId);
     }
     return res.data;
   } catch (error) {
@@ -33,4 +34,12 @@ export const logout = () => {
 
 export const getCurrentUser = () => {
   return localStorage.getItem('token');
+};
+
+export const getToken = () => {
+  return localStorage.getItem('token');
+};
+
+export const getUserId = () => {
+  return localStorage.getItem('userId');
 };

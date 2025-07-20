@@ -8,6 +8,8 @@ const ordersRoutes = require('./routes/orders');
 const reviewsRoutes = require('./routes/reviews');
 const paymentsRoutes = require('./routes/payments');
 const ticketsRoutes = require('./routes/tickets');
+const adminRoutes = require('./routes/admin');
+const notificationsRoutes = require('./routes/notifications');
 
 const app = express();
 const PORT = 5000;
@@ -27,6 +29,8 @@ app.use('/api/orders', auth, ordersRoutes);
 app.use('/api/reviews', auth, reviewsRoutes);
 app.use('/api/payments', auth, paymentsRoutes);
 app.use('/api/tickets', auth, ticketsRoutes);
+app.use('/api/admin', auth, adminRoutes);
+app.use('/api/notifications', auth, notificationsRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

@@ -1,7 +1,7 @@
 // client/src/components/Checkout.js
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { clearCart, createOrder, processPayment } from '../store/actions';
+import { clearCart, createOrder, processPayment, fetchProducts } from '../store/actions';
 import { useHistory } from 'react-router-dom';
 
 function Checkout() {
@@ -10,6 +10,16 @@ function Checkout() {
   const history = useHistory();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [address, setAddress] = useState({ street: '', city: '', state: '', zip: '' });
+  const [card, setCard] = useState({ number: '', expiry: '', cvv: '' });
+
+  const handleAddressChange = (e) => {
+    setAddress({ ...address, [e.target.name]: e.target.value });
+  };
+
+  const handleCardChange = (e) => {
+    setCard({ ...card, [e.target.name]: e.target.value });
+  };
 
   const handleCheckout = async () => {
     setLoading(true);
@@ -23,7 +33,9 @@ function Checkout() {
       const orderData = {
         items: cartItems,
         total,
-        date: new Date().toISOString()
+        date: new Date().toISOString(),
+        shippingAddress: address,
+        paymentInfo: { card: card.number } // Example, don't store full card details
       };
 
       const order = await dispatch(createOrder(orderData));
@@ -39,6 +51,8 @@ function Checkout() {
 
       if (paymentResult.success) {
         dispatch(clearCart());
+        // Refresh products to update stock availability
+        dispatch(fetchProducts());
         history.push(`/order/${order.id}`);
       } else {
         setError('Payment failed. Please try again.');
@@ -51,7 +65,7 @@ function Checkout() {
   };
 
   const calculateTotal = () => {
-    return cartItems.reduce((total, item) => total + item.price, 0).toFixed(2);
+    return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2);
   };
 
   if (cartItems.length === 0) {
@@ -73,8 +87,8 @@ function Checkout() {
           {cartItems.map((item) => (
             <li key={item.id} style={{ borderBottom: '1px solid #eee', padding: '10px 0' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span>{item.name}</span>
-                <span>${item.price}</span>
+                <span>{item.name} x {item.quantity}</span>
+                <span>${(item.price * item.quantity).toFixed(2)}</span>
               </div>
             </li>
           ))}
@@ -83,6 +97,22 @@ function Checkout() {
           Total: ${calculateTotal()}
         </div>
       </div>
+
+      <div style={{ marginBottom: '20px' }}>
+        <h3>Shipping Address</h3>
+        <input type="text" name="street" placeholder="Street" onChange={handleAddressChange} style={{ width: '100%', padding: '8px', boxSizing: 'border-box', marginBottom: '10px' }} />
+        <input type="text" name="city" placeholder="City" onChange={handleAddressChange} style={{ width: '100%', padding: '8px', boxSizing: 'border-box', marginBottom: '10px' }} />
+        <input type="text" name="state" placeholder="State" onChange={handleAddressChange} style={{ width: '100%', padding: '8px', boxSizing: 'border-box', marginBottom: '10px' }} />
+        <input type="text" name="zip" placeholder="Zip Code" onChange={handleAddressChange} style={{ width: '100%', padding: '8px', boxSizing: 'border-box', marginBottom: '10px' }} />
+      </div>
+
+      <div style={{ marginBottom: '20px' }}>
+        <h3>Credit Card</h3>
+        <input type="text" name="number" placeholder="Card Number" onChange={handleCardChange} style={{ width: '100%', padding: '8px', boxSizing: 'border-box', marginBottom: '10px' }} />
+        <input type="text" name="expiry" placeholder="MM/YY" onChange={handleCardChange} style={{ width: '100%', padding: '8px', boxSizing: 'border-box', marginBottom: '10px' }} />
+        <input type="text" name="cvv" placeholder="CVV" onChange={handleCardChange} style={{ width: '100%', padding: '8px', boxSizing: 'border-box', marginBottom: '10px' }} />
+      </div>
+
       <button
         onClick={handleCheckout}
         disabled={loading}

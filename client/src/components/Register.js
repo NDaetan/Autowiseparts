@@ -15,6 +15,7 @@ function Register() {
   const [usernameError, setUsernameError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
+  const [phoneError, setPhoneError] = useState('');
   const history = useHistory();
   const { login } = useAuth();
 
@@ -45,6 +46,15 @@ function Register() {
     return true;
   };
 
+  const validatePhone = (value) => {
+    if (!/^\d{10}$/.test(value)) {
+      setPhoneError('Phone number must be 10 digits.');
+      return false;
+    }
+    setPhoneError('');
+    return true;
+  };
+
   const handleRegister = async (e) => {
     e.preventDefault();
     setError('');
@@ -52,8 +62,9 @@ function Register() {
     const isUsernameValid = validateUsername(username);
     const isPasswordValid = validatePassword(password);
     const isConfirmPasswordValid = validateConfirmPassword(confirmPassword);
+    const isPhoneValid = validatePhone(phone);
 
-    if (!isUsernameValid || !isPasswordValid || !isConfirmPasswordValid) {
+    if (!isUsernameValid || !isPasswordValid || !isConfirmPasswordValid || !isPhoneValid) {
       return;
     }
 
@@ -110,8 +121,10 @@ function Register() {
             type="text" 
             value={phone} 
             onChange={(e) => setPhone(e.target.value)}
+            onBlur={(e) => validatePhone(e.target.value)}
             style={{ width: '100%', padding: '8px', boxSizing: 'border-box' }}
           />
+          {phoneError && <p style={{ color: 'red', fontSize: '0.8em' }}>{phoneError}</p>}
         </div>
         <div style={{ marginBottom: '15px' }}>
           <label style={{ display: 'block', marginBottom: '5px' }}>Password:</label>
