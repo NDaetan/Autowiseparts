@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "description": "Performance testing setup for AutowiseParts",
     "scripts": {
-        "build": "cd client && npm install && npm run build",
+        "build": "cd client && npm install && CI=false npm run build",
         "start": "cd server && npm start",
         "test:load": "artillery run load-test.yml",
         "test:load-report": "artillery run load-test.yml --output test-results.json && artillery report test-results.json",
