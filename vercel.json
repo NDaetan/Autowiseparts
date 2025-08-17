@@ -1,0 +1,35 @@
+{
+    "version": 2,
+    "name": "autowiseparts",
+    "builds": [
+        {
+            "src": "client/package.json",
+            "use": "@vercel/static-build",
+            "config": {
+                "distDir": "build"
+            }
+        },
+        {
+            "src": "server/app.js",
+            "use": "@vercel/node"
+        }
+    ],
+    "routes": [
+        {
+            "src": "/api/(.*)",
+            "dest": "server/app.js"
+        },
+        {
+            "src": "/(.*)",
+            "dest": "client/build/$1"
+        }
+    ],
+    "env": {
+        "NODE_ENV": "production"
+    },
+    "functions": {
+        "server/app.js": {
+            "maxDuration": 30
+        }
+    }
+}
