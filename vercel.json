@@ -1,22 +1,13 @@
 {
-  "version": 2,
-  "name": "autowiseparts",
   "builds": [
     {
       "src": "client/package.json",
       "use": "@vercel/static-build",
-      "config": {
-        "distDir": "build"
-      }
+      "config": { "distDir": "build" }
     }
   ],
   "routes": [
-    {
-      "handle": "filesystem"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/client/build/index.html"
-    }
+    { "handle": "filesystem" },
+    { "src": "/.*", "dest": "/client/build/index.html" }
   ]
 }
