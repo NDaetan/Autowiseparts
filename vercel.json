@@ -4,10 +4,21 @@
             "src": "client/package.json",
             "use": "@vercel/static-build",
             "config": {
-                "distDir": "build"
+                "distDir": "build",
+                "buildCommand": "npm run build:vercel"
             }
         }
     ],
+    "env": {
+        "CI": "false",
+        "GENERATE_SOURCEMAP": "false"
+    },
+    "build": {
+        "env": {
+            "CI": "false",
+            "GENERATE_SOURCEMAP": "false"
+        }
+    },
     "routes": [
         {
             "handle": "filesystem"
