@@ -1,0 +1,18 @@
+{
+    "name": "autowiseparts-performance-tests",
+    "version": "1.0.0",
+    "description": "Performance testing setup for AutowiseParts",
+    "scripts": {
+        "test:load": "artillery run load-test.yml",
+        "test:load-report": "artillery run load-test.yml --output test-results.json && artillery report test-results.json",
+        "test:lighthouse": "cd client && npm run lighthouse",
+        "test:bundle": "cd client && npm run analyze",
+        "start:all": "concurrently \"cd server && npm start\" \"cd client && npm start\"",
+        "test:performance": "npm run test:lighthouse && npm run test:load-report",
+        "test:requirements": "node performance-validator.js",
+        "test:full-performance": "npm run test:requirements && npm run test:lighthouse"
+    },
+    "devDependencies": {
+        "concurrently": "^8.2.0"
+    }
+}

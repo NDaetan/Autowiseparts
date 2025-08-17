@@ -16,7 +16,10 @@
         "start": "react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test",
-        "eject": "react-scripts eject"
+        "eject": "react-scripts eject",
+        "analyze": "npm run build && npx webpack-bundle-analyzer build/static/js/main.*.js",
+        "lighthouse": "lighthouse http://localhost:3000 --output html --output-path ./lighthouse-report.html --chrome-flags=\"--headless\"",
+        "lighthouse-ci": "lighthouse http://localhost:3000 --output json --output-path ./lighthouse-report.json --chrome-flags=\"--headless\""
     },
     "eslintConfig": {
         "extends": [
@@ -35,5 +38,9 @@
             "last 1 firefox version",
             "last 1 safari version"
         ]
+    },
+    "devDependencies": {
+        "lighthouse": "^12.8.0",
+        "webpack-bundle-analyzer": "^4.10.2"
     }
 }
