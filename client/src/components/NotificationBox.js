@@ -24,10 +24,10 @@ function NotificationBox() {
     try {
       // Mark as read
       await api.post(`/notifications/mark-read/${notification.type}/${notification.orderId || notification.ticketId}`);
-      
+
       // Remove from local state
       setNotifications(notifications.filter(n => n.id !== notification.id));
-      
+
       // Navigate to the relevant page
       history.push(notification.link);
     } catch (error) {
@@ -62,7 +62,7 @@ function NotificationBox() {
       }}>
         Notifications ({notifications.length})
       </div>
-      
+
       <div style={{ maxHeight: '250px', overflowY: 'auto' }}>
         {notifications.map((notification, index) => (
           <div

@@ -53,11 +53,11 @@ function Cart() {
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                <button 
+                <button
                   onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
-                  style={{ 
-                    padding: '5px 10px', 
-                    backgroundColor: '#f8f9fa', 
+                  style={{
+                    padding: '5px 10px',
+                    backgroundColor: '#f8f9fa',
                     border: '1px solid #ddd',
                     borderRadius: '3px',
                     cursor: 'pointer'
@@ -68,11 +68,11 @@ function Cart() {
                 <span style={{ padding: '0 10px', fontSize: '16px', fontWeight: 'bold' }}>
                   {item.quantity}
                 </span>
-                <button 
+                <button
                   onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
-                  style={{ 
-                    padding: '5px 10px', 
-                    backgroundColor: '#f8f9fa', 
+                  style={{
+                    padding: '5px 10px',
+                    backgroundColor: '#f8f9fa',
                     border: '1px solid #ddd',
                     borderRadius: '3px',
                     cursor: 'pointer'
@@ -81,7 +81,7 @@ function Cart() {
                   +
                 </button>
               </div>
-              <button 
+              <button
                 onClick={() => handleRemoveFromCart(item.id)}
                 style={{
                   padding: '5px 10px',

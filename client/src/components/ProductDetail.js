@@ -33,12 +33,12 @@ function ProductDetail() {
   const handleAddToCart = () => {
     const cartItem = cart.find(item => item.id === product.id);
     const currentQuantityInCart = cartItem ? cartItem.quantity : 0;
-    
+
     if (currentQuantityInCart >= product.stock) {
       alert(`Cannot add more items. Only ${product.stock} available in stock.`);
       return;
     }
-    
+
     dispatch(addToCart(product));
     alert(`${product.name} added to cart!`);
   };
@@ -52,7 +52,7 @@ function ProductDetail() {
       <button onClick={handleAddToCart} disabled={product.stock === 0}>
         {product.stock === 0 ? 'Out of Stock' : 'Add to Cart'}
       </button>
-      
+
       <ReviewList productId={product.id} reviews={reviews} />
     </div>
   );
