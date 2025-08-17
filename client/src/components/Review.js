@@ -1,6 +1,6 @@
 // client/src/components/Review.js
 import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { submitReview } from '../store/actions';
 
@@ -9,7 +9,6 @@ function Review({ productId, productName, onReviewSubmitted }) {
   const [comment, setComment] = useState('');
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-  const history = useHistory();
 
   const handleSubmit = async (e) => {
     e.preventDefault();

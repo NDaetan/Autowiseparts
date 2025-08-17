@@ -5,7 +5,6 @@ import api from '../services/api';
 
 function NotificationBox() {
   const [notifications, setNotifications] = useState([]);
-  const [loading, setLoading] = useState(false);
   const history = useHistory();
 
   useEffect(() => {
@@ -14,13 +13,10 @@ function NotificationBox() {
 
   const fetchNotifications = async () => {
     try {
-      setLoading(true);
       const response = await api.get('/notifications');
       setNotifications(response.data);
     } catch (error) {
       console.error('Failed to fetch notifications:', error);
-    } finally {
-      setLoading(false);
     }
   };
 

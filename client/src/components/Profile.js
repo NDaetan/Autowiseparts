@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext';
 
 function Profile() {
   const { getCurrentUsername } = useAuth();
-  const [username, setUsername] = useState(getCurrentUsername() || '');
+  const [username] = useState(getCurrentUsername() || '');
   const [email, setEmail] = useState('');
   const [address, setAddress] = useState('');
   const [phone, setPhone] = useState('');

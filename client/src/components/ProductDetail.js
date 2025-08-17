@@ -1,6 +1,6 @@
 // client/src/components/ProductDetail.js
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { addToCart } from '../store/actions';
 import ReviewList from './ReviewList'; // Import ReviewList

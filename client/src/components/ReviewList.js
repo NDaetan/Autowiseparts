@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import api from '../services/api';
+import React from 'react';
 
 function ReviewList({ productId, reviews }) {
   const filteredReviews = reviews.filter(review => review.productId === productId);
